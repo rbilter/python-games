@@ -64,7 +64,7 @@ class CrazyCars(GameInterface):
         self.__all_sprites = pygame.sprite.Group()
         self.__all_sprites.add(self.__P1)
         self.__all_sprites.add(self.__E1)
-        self.__game_surface.render_get_ready()
+        self.__game_surface.render_get_ready(self.__P1)
         
         self.__sleep(2)
         self.__game_sound.play_backgroud_music()
