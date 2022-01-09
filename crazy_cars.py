@@ -10,6 +10,8 @@ import time
 
 class CrazyCars():
     def __init__(self):
+        pygame.init()
+        
         # game surface
         self.game_surface = surface.GameSurface()
         self.game_surface.new_game_surface()
@@ -57,12 +59,12 @@ class CrazyCars():
         return game_over
 
     def end_game(self):
-        self.game_surface.quit()
+        pygame.quit()
         sys.exit()
 
     def new_game(self):
         self.P1 = players.Player(self.game_surface.get_screen_width())
-        self.E1 = players.Enemy(self.game_surface.get_screen_width(), self.game_speed)
+        self.E1 = players.Enemy(self.game_speed, self.game_surface.get_screen_width())
 
         self.enemies = pygame.sprite.Group()
         self.enemies.add(self.E1)

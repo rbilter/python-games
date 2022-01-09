@@ -1,12 +1,9 @@
-import players
 import pygame
 from pygame.constants import *
 
 
 class GameSurface():
     def __init__(self):
-        pygame.init()
-
         # define frames per second
         self.FPS = 60
         self.framesPerSec = pygame.time.Clock()
@@ -35,6 +32,9 @@ class GameSurface():
         self.collision = pygame.image.load("assets/collision.png")
         self.collision = pygame.transform.scale(self.collision, (90, 90))
 
+    def get_screen_height(self):
+        return self.SCREEN_HEIGHT
+
     def get_screen_width(self):
         return self.SCREEN_WIDTH
 
@@ -44,9 +44,6 @@ class GameSurface():
     def new_game_surface(self):
         self.surface = pygame.display.set_mode((400, 600))
         pygame.display.set_caption("Crazy Cars")
-
-    def quit(self):
-        pygame.quit()
 
     def render_backgroud(self):
         self.surface.blit(self.background, (0, 0))
@@ -88,7 +85,7 @@ class GameSurface():
     def render_sprites(self, all_sprites):
         for entity in all_sprites:
             self.surface.blit(entity.image, entity.rect)
-            entity.update()
+            entity.update(self.SCREEN_HEIGHT)
 
     def update(self):
         pygame.display.update()

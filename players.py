@@ -8,10 +8,10 @@ class Player(pygame.sprite.Sprite):
         super().__init__()
         self.image = pygame.image.load("assets/Player.png")
         self.rect = self.image.get_rect()
-        self.rect.center = (160, 520)
         self.screen_width = screen_width
+        self.rect.center = (self.screen_width / 2, 520)
 
-    def update(self):
+    def update(self, screen_height):
         pressed_keys = pygame.key.get_pressed()
 
         if self.rect.left > 35:
@@ -23,14 +23,14 @@ class Player(pygame.sprite.Sprite):
 
 
 class Enemy(pygame.sprite.Sprite):
-    def __init__(self, screen_width, speed):
+    def __init__(self, speed, screen_width):
         super().__init__()
         self.image = pygame.image.load("assets/Enemy.png")
         self.rect = self.image.get_rect()
-        self.rect.center = (random.randint(40, screen_width - 40), 0)
         self.screen_width = screen_width
         self.speed = speed
         self.score = 0
+        self.reset_center()
 
     def increment_speed(self):
         self.speed += 0.5
@@ -38,9 +38,13 @@ class Enemy(pygame.sprite.Sprite):
     def get_score(self):
         return self.score
 
-    def update(self):
+    def update(self, screen_height):
         self.rect.move_ip(0, self.speed)
-        if self.rect.bottom > 600:
+        if self.rect.bottom > screen_height:
             self.score += 1
             self.rect.top = 0
-            self.rect.center = (random.randint(40, self.screen_width - 40), 0)
+            self.reset_center()
+    
+    def reset_center(self):
+        self.rect.center =  (random.randint(40, self.screen_width - 40), 0)
+            
