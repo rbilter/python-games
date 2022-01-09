@@ -2,8 +2,8 @@ from pathlib import Path
 
 
 class GameSettings():
-    def __init__(self):
-        self.__settings_file = Path('assets/settings.txt')
+    def __init__(self, assets):
+        self.__settings_file = Path(assets + '/settings.txt')
         self.__high_score = 0
         self.__load_high_score()
 

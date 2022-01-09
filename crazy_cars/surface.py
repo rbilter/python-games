@@ -3,7 +3,7 @@ from pygame.constants import *
 
 
 class GameSurface():
-    def __init__(self, width, height):
+    def __init__(self, assets, width, height):
         # define frames per second
         self.__FPS = 60
         self.__framesPerSec = pygame.time.Clock()
@@ -24,9 +24,8 @@ class GameSurface():
         self.__font_small = pygame.font.SysFont("Verdana", 20)
 
         # assets
-        self.__background = pygame.image.load(
-            "assets/images/animated_street.png")
-        self.__collision = pygame.image.load("assets/images/collision.png")
+        self.__background = pygame.image.load(assets + '/images/animated_street.png')
+        self.__collision = pygame.image.load(assets + '/images/collision.png')
         self.__collision = pygame.transform.scale(self.__collision, (90, 90))
 
     def get_screen_height(self):
