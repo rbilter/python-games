@@ -1,53 +1,90 @@
 # imports
+import players
+import pygame
+from pygame.constants import *
+import settings
+import surface
 import sys
 import time
-import surface
-import settings
 
-# Grab the game settings
-gs = settings.GameSettings()
-high_score = gs.get_high_score()
 
-# Create the game play surface
-surface = surface.GameSurface()
-surface.new_game_surface()
+class CrazyCars():
+    def __init__(self):
+        # game surface
+        self.game_surface = surface.GameSurface()
+        self.game_surface.new_game_surface()
+        
+        # game settings
+        self.gs = settings.GameSettings()
+        self.high_score = self.gs.get_high_score()
+        self.game_speed = 5
+        
+        # user event
+        self.INC_SPEED = pygame.USEREVENT + 1
+        pygame.time.set_timer(self.INC_SPEED, 1000)        
 
-# start the game and the main game loop
-surface.start_game()
-time.sleep(2)
-while True:
-    # cycles through all game events
-    quit_game = surface.check_events()
+    def close_game(self):
+        close = False
+        for event in pygame.event.get():
+            if event.type == self.INC_SPEED:
+                self.E1.increment_speed()
+            if event.type == QUIT:
+                close = True
+        return close
 
-    # run game
-    if not quit_game:
-        # update score and backgroup
-        score = surface.get_ememy().get_score()
-        if high_score < score:
-            high_score = score
+    def play_round(self):
+        game_over = False
+        score = self.E1.get_score()
 
-        # render surface
-        surface.render_backgroud()
-        surface.render_game_score(score)
-        surface.render_high_score(high_score)
-        surface.render_sprites()
+        if self.high_score < score:
+            self.high_score = score
+        self.game_surface.render_backgroud()
+        self.game_surface.render_game_score(score)
+        self.game_surface.render_high_score(self.high_score)
+        self.game_surface.render_sprites(self.all_sprites)
 
-        # collision detection between the player and enemy
-        if surface.had_collision():
-            surface.render_collision()
+        if self.game_surface.had_collision(self.P1, self.enemies):
+            self.game_surface.render_collision(self.P1)
             time.sleep(1.5)
 
-            surface.render_game_over()
-            gs.set_high_score(high_score)
-            time.sleep(2)
+            self.game_surface.render_game_over(self.all_sprites)
+            self.gs.set_high_score(self.high_score)
+            game_over = True
+            time.sleep(2.0)
+        else:
+            self.game_surface.update()
 
-            if surface.try_again():
-                surface.start_game()
-            else:
-                quit_game = True
+        return game_over
 
-    if not quit_game:
-        surface.update()
-    else:
-        surface.quit()
+    def end_game(self):
+        self.game_surface.quit()
         sys.exit()
+
+    def new_game(self):
+        self.P1 = players.Player(self.game_surface.get_screen_width())
+        self.E1 = players.Enemy(self.game_surface.get_screen_width(), self.game_speed)
+
+        self.enemies = pygame.sprite.Group()
+        self.enemies.add(self.E1)
+        self.all_sprites = pygame.sprite.Group()
+        self.all_sprites.add(self.P1)
+        self.all_sprites.add(self.E1)
+        self.game_surface.render_get_ready()
+        time.sleep(2)
+
+    def try_again(self):
+        try_again = False
+        while True:
+            key_pressed = False
+            for event in pygame.event.get():
+                if event.type == KEYDOWN and event.key == K_n:
+                    key_pressed = True
+                if event.type == KEYDOWN and event.key == K_y:
+                    try_again = True
+                    key_pressed = True
+
+            if not key_pressed:
+                self.game_surface.render_play_again()
+            else:
+                break
+        return try_again

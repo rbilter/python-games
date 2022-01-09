@@ -35,30 +35,11 @@ class GameSurface():
         self.collision = pygame.image.load("assets/collision.png")
         self.collision = pygame.transform.scale(self.collision, (90, 90))
 
-        # user event
-        self.INC_SPEED = pygame.USEREVENT + 1
-        pygame.time.set_timer(self.INC_SPEED, 1000)
+    def get_screen_width(self):
+        return self.SCREEN_WIDTH
 
-    def check_events(self):
-        quit = False
-        for event in pygame.event.get():
-            if event.type == self.INC_SPEED:
-                self.E1.increment_speed()
-            if event.type == QUIT:
-                quit = True
-        return quit
-
-    def get_speed(self):
-        return self.SCORE
-
-    def get_player(self):
-        return self.P1
-
-    def get_ememy(self):
-        return self.E1
-
-    def had_collision(self):
-        return pygame.sprite.spritecollideany(self.P1, self.enemies)
+    def had_collision(self, player, enemies):
+        return pygame.sprite.spritecollideany(player, enemies)
 
     def new_game_surface(self):
         self.surface = pygame.display.set_mode((400, 600))
@@ -70,70 +51,44 @@ class GameSurface():
     def render_backgroud(self):
         self.surface.blit(self.background, (0, 0))
 
-    def render_collision(self):
-        x = self.P1.rect.centerx - (self.collision.get_width() / 2)
-        y = self.P1.rect.top - (self.collision.get_height() / 2)
+    def render_collision(self, player):
+        x = player.rect.centerx - (self.collision.get_width() / 2)
+        y = player.rect.top - (self.collision.get_height() / 2)
         self.surface.blit(self.collision, (x, y))
         pygame.display.update()
         pygame.mixer.Sound('assets/crash.wav').play()
 
-    def render_game_over(self):
+    def render_game_over(self, all_sprites):
         self.surface.fill(self.RED)
         self.surface.blit(self.GAME_OVER_LABEL, (30, 250))
         pygame.display.update()
 
-        for entity in self.all_sprites:
+        for entity in all_sprites:
             entity.kill()
-
-    def render_sprites(self):
-        for entity in self.all_sprites:
-            self.surface.blit(entity.image, entity.rect)
-            entity.update()
 
     def render_game_score(self, score):
         s = self.font_small.render(str(score), True, self.BLACK)
         self.surface.blit(s, (10, 560))
 
-    def render_high_score(self, score):
-        s = self.font_small.render(str(score), True, self.BLACK)
-        self.surface.blit(s, (10, 10))
-
-    def start_game(self):
-        self.SPEED = 5
-        self.SCORE = 0
-
-        self.P1 = players.Player(self.SCREEN_WIDTH)
-        self.E1 = players.Enemy(self.SCREEN_WIDTH, self.SPEED)
-
-        self.enemies = pygame.sprite.Group()
-        self.enemies.add(self.E1)
-        self.all_sprites = pygame.sprite.Group()
-        self.all_sprites.add(self.P1)
-        self.all_sprites.add(self.E1)
-
+    def render_get_ready(self):
         self.surface.fill(self.BLUE)
         self.surface.blit(self.GET_READY_LABEL, (30, 250))
         pygame.display.update()
 
-    def try_again(self):
-        try_again = False
-        while True:
-            key_pressed = False
-            for event in pygame.event.get():
-                if event.type == KEYDOWN and event.key == K_n:
-                    key_pressed = True
-                if event.type == KEYDOWN and event.key == K_y:
-                    try_again = True
-                    key_pressed = True
+    def render_high_score(self, score):
+        s = self.font_small.render(str(score), True, self.BLACK)
+        self.surface.blit(s, (10, 10))
 
-            if not key_pressed:
-                x = (self.surface.get_width() / 2) - \
-                    (self.PLAY_AGAIN_LABEL.get_width() / 2)
-                self.surface.blit(self.PLAY_AGAIN_LABEL, (x, 320))
-                pygame.display.update()
-            else:
-                break
-        return try_again
+    def render_play_again(self):
+        x = (self.surface.get_width() / 2) - \
+            (self.PLAY_AGAIN_LABEL.get_width() / 2)
+        self.surface.blit(self.PLAY_AGAIN_LABEL, (x, 320))
+        pygame.display.update()        
+
+    def render_sprites(self, all_sprites):
+        for entity in all_sprites:
+            self.surface.blit(entity.image, entity.rect)
+            entity.update()
 
     def update(self):
         pygame.display.update()
