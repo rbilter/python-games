@@ -3,7 +3,7 @@ from pygame.constants import *
 
 
 class GameSurface():
-    def __init__(self):
+    def __init__(self, width, height):
         # define frames per second
         self.FPS = 60
         self.framesPerSec = pygame.time.Clock()
@@ -16,8 +16,8 @@ class GameSurface():
         self.WHITE = (255, 255, 255)
 
         # screen size
-        self.SCREEN_WIDTH = 400
-        self.SCREEN_HEIGHT = 600
+        self.SCREEN_WIDTH = width
+        self.SCREEN_HEIGHT = height
 
         # fonts and labels
         self.font = pygame.font.SysFont("Verdana", 60)
@@ -37,9 +37,6 @@ class GameSurface():
 
     def get_screen_width(self):
         return self.SCREEN_WIDTH
-
-    def had_collision(self, player, enemies):
-        return pygame.sprite.spritecollideany(player, enemies)
 
     def new_game_surface(self):
         self.surface = pygame.display.set_mode((400, 600))
@@ -85,7 +82,7 @@ class GameSurface():
     def render_sprites(self, all_sprites):
         for entity in all_sprites:
             self.surface.blit(entity.image, entity.rect)
-            entity.update(self.SCREEN_HEIGHT)
+            entity.update(self.SCREEN_WIDTH, self.SCREEN_HEIGHT)
 
     def update(self):
         pygame.display.update()

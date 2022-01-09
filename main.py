@@ -6,9 +6,8 @@ def main():
     cc = CrazyCars()
     cc.new_game()
     while True:
-        quit_game = cc.close_game()
+        quit_game = cc.game_closed()
         if not quit_game:
-
             game_over = cc.play_round()
             if game_over:
                 if cc.try_again():
