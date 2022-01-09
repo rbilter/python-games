@@ -3,17 +3,17 @@ import pygame
 
 class Sound():
     def __init__(self):
-        # game sounds
-        self.crash_sound = pygame.mixer.Sound('assets/sounds/crash.wav')
-        self.backgroud_music = pygame.mixer.Sound('assets/sounds/action_rock.mp3')
-        self.current_music = None
+        # used to store the current sound being played
+        self.__current_sound = None
 
     def play_backgroud_music(self):
-        self.current_music = self.backgroud_music.play()
+        s = pygame.mixer.Sound('assets/sounds/action_rock.mp3')
+        self.__current_sound = s.play()
 
     def play_crash(self):
-        self.crash_sound.play()
+        s = pygame.mixer.Sound('assets/sounds/crash.wav')
+        s.play()
 
     def stop(self):
-        if self.current_music != None:
-            self.current_music.stop()
+        if self.__current_sound != None:
+            self.__current_sound.stop()

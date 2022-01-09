@@ -31,21 +31,21 @@ class Enemy(pygame.sprite.Sprite):
         super().__init__()
         self.image = pygame.image.load("assets/images/enemy.png")
         self.rect = self.image.get_rect()
-        self.speed = speed
-        self.laps = 0
+        self.__speed = speed
+        self.__laps = 0
 
     def get_laps(self):
-        return self.laps
+        return self.__laps
 
     def increment_speed(self):
-        self.speed += 0.5
+        self.__speed += 0.5
 
     def reset_center(self, screen_width):
         self.rect.center = (random.randint(40, screen_width - 40), 0)
 
     def update(self, screen_width, screen_height):
-        self.rect.move_ip(0, self.speed)
+        self.rect.move_ip(0, self.__speed)
         if self.rect.bottom > screen_height:
-            self.laps += 1
             self.rect.top = 0
             self.reset_center(screen_width)
+            self.__laps += 1
