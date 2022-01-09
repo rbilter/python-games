@@ -11,19 +11,19 @@ import time
 class CrazyCars():
     def __init__(self):
         pygame.init()
-        
+
         # game surface
         self.game_surface = surface.GameSurface()
         self.game_surface.new_game_surface()
-        
+
         # game settings
         self.gs = settings.GameSettings()
         self.high_score = self.gs.get_high_score()
         self.game_speed = 5
-        
+
         # user event
         self.INC_SPEED = pygame.USEREVENT + 1
-        pygame.time.set_timer(self.INC_SPEED, 1000)        
+        pygame.time.set_timer(self.INC_SPEED, 1000)
 
     def close_game(self):
         close = False
@@ -36,10 +36,11 @@ class CrazyCars():
 
     def play_round(self):
         game_over = False
-        score = self.E1.get_score()
 
+        score = self.E1.get_score()
         if self.high_score < score:
             self.high_score = score
+
         self.game_surface.render_backgroud()
         self.game_surface.render_game_score(score)
         self.game_surface.render_high_score(self.high_score)
@@ -51,11 +52,10 @@ class CrazyCars():
 
             self.game_surface.render_game_over(self.all_sprites)
             self.gs.set_high_score(self.high_score)
-            game_over = True
             time.sleep(2.0)
+            game_over = True
         else:
             self.game_surface.update()
-
         return game_over
 
     def end_game(self):
@@ -64,7 +64,8 @@ class CrazyCars():
 
     def new_game(self):
         self.P1 = players.Player(self.game_surface.get_screen_width())
-        self.E1 = players.Enemy(self.game_speed, self.game_surface.get_screen_width())
+        self.E1 = players.Enemy(
+            self.game_speed, self.game_surface.get_screen_width())
 
         self.enemies = pygame.sprite.Group()
         self.enemies.add(self.E1)

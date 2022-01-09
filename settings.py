@@ -1,5 +1,6 @@
 from pathlib import Path
 
+
 class GameSettings():
     def __init__(self):
         self.settings_file = Path('assets/settings.txt')

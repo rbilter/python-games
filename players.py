@@ -44,7 +44,6 @@ class Enemy(pygame.sprite.Sprite):
             self.score += 1
             self.rect.top = 0
             self.reset_center()
-    
+
     def reset_center(self):
-        self.rect.center =  (random.randint(40, self.screen_width - 40), 0)
-            
+        self.rect.center = (random.randint(40, self.screen_width - 40), 0)

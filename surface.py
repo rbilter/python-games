@@ -80,7 +80,7 @@ class GameSurface():
         x = (self.surface.get_width() / 2) - \
             (self.PLAY_AGAIN_LABEL.get_width() / 2)
         self.surface.blit(self.PLAY_AGAIN_LABEL, (x, 320))
-        pygame.display.update()        
+        pygame.display.update()
 
     def render_sprites(self, all_sprites):
         for entity in all_sprites:
