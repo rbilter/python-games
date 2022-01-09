@@ -1,4 +1,3 @@
-from os import truncate
 from crazy_cars import CrazyCars
 
 

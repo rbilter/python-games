@@ -6,7 +6,7 @@ import random
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.image.load("assets/Player.png")
+        self.image = pygame.image.load("assets/images/player.png")
         self.rect = self.image.get_rect()
 
     def get_center(self):
@@ -29,7 +29,7 @@ class Player(pygame.sprite.Sprite):
 class Enemy(pygame.sprite.Sprite):
     def __init__(self, speed):
         super().__init__()
-        self.image = pygame.image.load("assets/Enemy.png")
+        self.image = pygame.image.load("assets/images/enemy.png")
         self.rect = self.image.get_rect()
         self.speed = speed
         self.laps = 0

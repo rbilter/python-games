@@ -28,8 +28,8 @@ class GameSurface():
         self.GET_READY_LABEL = self.font.render("Get Ready!", True, self.BLACK)
 
         # assets
-        self.background = pygame.image.load("assets/AnimatedStreet.png")
-        self.collision = pygame.image.load("assets/collision.png")
+        self.background = pygame.image.load("assets/images/animated_street.png")
+        self.collision = pygame.image.load("assets/images/collision.png")
         self.collision = pygame.transform.scale(self.collision, (90, 90))
 
     def get_screen_height(self):

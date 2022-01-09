@@ -24,7 +24,6 @@ class CrazyCars():
 
         # game settings
         self.game_settings = settings.GameSettings()
-        self.high_score = self.game_settings.get_high_score()
         self.game_speed = 5
 
         # game sound
@@ -69,12 +68,9 @@ class CrazyCars():
         game_over = False
 
         score = self.E1.get_laps()
-        if self.high_score < score:
-            self.high_score = score
-
         self.game_surface.render_backgroud()
         self.game_surface.render_game_score(score)
-        self.game_surface.render_high_score(self.high_score)
+        self.game_surface.render_high_score(self.game_settings.get_high_score())
         self.game_surface.render_sprites(self.all_sprites)
 
         if self.had_collision():
@@ -84,7 +80,7 @@ class CrazyCars():
             time.sleep(1.5)
 
             self.game_surface.render_game_over(self.all_sprites)
-            self.game_settings.set_high_score(self.high_score)
+            self.game_settings.set_high_score(score)
             time.sleep(2.0)
             game_over = True
         else:
