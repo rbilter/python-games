@@ -46,9 +46,6 @@ class CrazyCars():
                 close = True
         return close
 
-    def had_collision(self):
-        return pygame.sprite.spritecollideany(self.P1, self.enemies)
-
     def new_game(self):
         self.P1 = players.Player()
         self.P1.reset_center(self.SURFACE_WIDTH)
@@ -66,22 +63,10 @@ class CrazyCars():
 
     def play_round(self):
         game_over = False
-
-        score = self.E1.get_laps()
-        self.game_surface.render_backgroud()
-        self.game_surface.render_game_score(score)
-        self.game_surface.render_high_score(self.game_settings.get_high_score())
-        self.game_surface.render_sprites(self.all_sprites)
-
-        if self.had_collision():
-            self.game_sound.stop()
-            self.game_surface.render_collision(self.P1)
-            self.game_sound.play_crash()
-            time.sleep(1.5)
-
-            self.game_surface.render_game_over(self.all_sprites)
-            self.game_settings.set_high_score(score)
-            time.sleep(2.0)
+        score = self.__play_round()
+        if self.__had_collision():
+            self.__play_collision()
+            self.__play_game_over(score)
             game_over = True
         else:
             self.game_surface.update()
@@ -106,3 +91,26 @@ class CrazyCars():
             else:
                 break
         return try_again
+
+    def __had_collision(self):
+        return pygame.sprite.spritecollideany(self.P1, self.enemies)
+
+    def __play_collision(self):
+        self.game_sound.stop()
+        self.game_surface.render_collision(self.P1)
+        self.game_sound.play_crash()
+        time.sleep(1.5)
+
+    def __play_game_over(self, score):
+        self.game_surface.render_game_over(self.all_sprites)
+        if self.game_settings.set_high_score(score):
+            self.game_surface.render_new_high_score(score)
+        time.sleep(2.0)
+
+    def __play_round(self):
+        score = self.E1.get_laps()
+        self.game_surface.render_backgroud()
+        self.game_surface.render_game_score(score)
+        self.game_surface.render_high_score(self.game_settings.get_high_score())
+        self.game_surface.render_sprites(self.all_sprites)
+        return score      

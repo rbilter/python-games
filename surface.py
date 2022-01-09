@@ -1,4 +1,5 @@
 import pygame
+from pygame import surface
 from pygame.constants import *
 
 
@@ -22,10 +23,10 @@ class GameSurface():
         # fonts and labels
         self.font = pygame.font.SysFont("Verdana", 60)
         self.font_small = pygame.font.SysFont("Verdana", 20)
-        self.GAME_OVER_LABEL = self.font.render("Game Over", True, self.BLACK)
-        self.PLAY_AGAIN_LABEL = self.font_small.render(
-            "Play Again? Yes(y) or No(n)", True, self.BLACK)
-        self.GET_READY_LABEL = self.font.render("Get Ready!", True, self.BLACK)
+        self.GAME_OVER_LABEL = "Game Over"
+        self.PLAY_AGAIN_LABEL = "Play Again? Yes(y) or No(n)"
+        self.GET_READY_LABEL = "Get Ready!"
+        self.NEW_HIGH_SCORE = "IS A NEW HIGH SCORE!"
 
         # assets
         self.background = pygame.image.load("assets/images/animated_street.png")
@@ -52,8 +53,12 @@ class GameSurface():
         pygame.display.update()
 
     def render_game_over(self, all_sprites):
+        s = self.font.render(self.GAME_OVER_LABEL, True, self.BLACK)
+        x = self.__get_x_center(s)
+        y = self.__get__y_center(s)
+        
         self.surface.fill(self.RED)
-        self.surface.blit(self.GAME_OVER_LABEL, (30, 250))
+        self.surface.blit(s, (x, y))
         pygame.display.update()
 
         for entity in all_sprites:
@@ -64,18 +69,26 @@ class GameSurface():
         self.surface.blit(s, (10, 560))
 
     def render_get_ready(self):
+        s = self.font.render(self.GET_READY_LABEL, True, self.BLACK)
+        x = self.__get_x_center(s)
+        y = self.__get__y_center(s)
+       
         self.surface.fill(self.BLUE)
-        self.surface.blit(self.GET_READY_LABEL, (30, 250))
+        self.surface.blit(s, (x, y))
         pygame.display.update()
 
     def render_high_score(self, score):
         s = self.font_small.render(str(score), True, self.BLACK)
         self.surface.blit(s, (10, 10))
 
+    def render_new_high_score(self, score):
+        s = self.font_small.render(str(score) + ' ' + self.NEW_HIGH_SCORE, True, self.BLACK)
+        self.surface.blit(s, (self.__get_x_center(s), 10))
+
     def render_play_again(self):
-        x = (self.surface.get_width() / 2) - \
-            (self.PLAY_AGAIN_LABEL.get_width() / 2)
-        self.surface.blit(self.PLAY_AGAIN_LABEL, (x, 320))
+        s = self.font_small.render(self.PLAY_AGAIN_LABEL, True, self.BLACK)
+        x = self.__get_x_center(s)
+        self.surface.blit(s, (x, 560))
         pygame.display.update()
 
     def render_sprites(self, all_sprites):
@@ -86,3 +99,9 @@ class GameSurface():
     def update(self):
         pygame.display.update()
         self.framesPerSec.tick(self.FPS)
+
+    def __get_x_center(self, sprite):
+        return (self.SCREEN_WIDTH / 2) - (sprite.get_width() / 2)
+
+    def __get__y_center(self, sprite):
+        return (self.SCREEN_HEIGHT / 2) - (sprite.get_height() / 2)
