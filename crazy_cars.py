@@ -60,7 +60,8 @@ class CrazyCars():
         self.__all_sprites.add(self.__P1)
         self.__all_sprites.add(self.__E1)
         self.__game_surface.render_get_ready()
-        time.sleep(2)
+        
+        self.__sleep(2)
         self.__game_sound.play_backgroud_music()
 
     def play_round(self):
@@ -103,13 +104,13 @@ class CrazyCars():
         self.__game_sound.stop()
         self.__game_surface.render_collision(self.__P1)
         self.__game_sound.play_crash()
-        time.sleep(1.5)
+        self.__sleep(1.5)
 
     def __play_game_over(self, score):
         self.__game_surface.render_game_over(self.__all_sprites)
         if self.__game_settings.set_high_score(score):
             self.__game_surface.render_new_high_score(score)
-        time.sleep(2.0)
+        self.__sleep(2.0)
 
     def __play_round(self):
         score = self.__E1.get_laps()
@@ -119,3 +120,6 @@ class CrazyCars():
             self.__game_settings.get_high_score())
         self.__game_surface.render_sprites(self.__all_sprites)
         return score
+
+    def __sleep(self, seconds):
+        time.sleep(seconds)
