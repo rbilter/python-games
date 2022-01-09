@@ -3,6 +3,7 @@ import players
 import pygame
 from pygame.constants import *
 import settings
+import sound
 import surface
 import sys
 import time
@@ -22,9 +23,12 @@ class CrazyCars():
         self.game_surface.new_game_surface()
 
         # game settings
-        self.gs = settings.GameSettings()
-        self.high_score = self.gs.get_high_score()
+        self.game_settings = settings.GameSettings()
+        self.high_score = self.game_settings.get_high_score()
         self.game_speed = 5
+
+        # game sound
+        self.game_sound = sound.Sound()
 
         # user event
         self.INC_SPEED = pygame.USEREVENT + 1
@@ -59,6 +63,7 @@ class CrazyCars():
         self.all_sprites.add(self.E1)
         self.game_surface.render_get_ready()
         time.sleep(2)
+        self.game_sound.play_backgroud_music()
 
     def play_round(self):
         game_over = False
@@ -73,11 +78,13 @@ class CrazyCars():
         self.game_surface.render_sprites(self.all_sprites)
 
         if self.had_collision():
+            self.game_sound.stop()
             self.game_surface.render_collision(self.P1)
+            self.game_sound.play_crash()
             time.sleep(1.5)
 
             self.game_surface.render_game_over(self.all_sprites)
-            self.gs.set_high_score(self.high_score)
+            self.game_settings.set_high_score(self.high_score)
             time.sleep(2.0)
             game_over = True
         else:

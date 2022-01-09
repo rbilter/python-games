@@ -50,7 +50,6 @@ class GameSurface():
         y = player.rect.top - (self.collision.get_height() / 2)
         self.surface.blit(self.collision, (x, y))
         pygame.display.update()
-        pygame.mixer.Sound('assets/crash.wav').play()
 
     def render_game_over(self, all_sprites):
         self.surface.fill(self.RED)
