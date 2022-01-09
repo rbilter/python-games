@@ -42,8 +42,10 @@ class CrazyCars():
         for event in pygame.event.get():
             if event.type == self.__INC_SPEED:
                 self.__E1.increment_speed()
+                break
             if event.type == QUIT:
                 close = True
+                break
         return close
 
     def new_game(self):
@@ -79,12 +81,14 @@ class CrazyCars():
             for event in pygame.event.get():
                 if event.type == KEYDOWN and event.key == K_n:
                     key_pressed = True
+                    break
                 if event.type == KEYDOWN and event.key == K_y:
                     try_again = True
                     key_pressed = True
+                    break
                 if event.type == QUIT:
-                    try_again = False
                     key_pressed = True
+                    break
 
             if not key_pressed:
                 self.__game_surface.render_play_again()
