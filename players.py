@@ -4,8 +4,6 @@ import random
 
 
 class Player(pygame.sprite.Sprite):
-    '''defines the players car'''
-
     def __init__(self, screen_width):
         super().__init__()
         self.image = pygame.image.load("assets/Player.png")
@@ -14,7 +12,6 @@ class Player(pygame.sprite.Sprite):
         self.screen_width = screen_width
 
     def update(self):
-        '''prevents the car from going off the screen'''
         pressed_keys = pygame.key.get_pressed()
 
         if self.rect.left > 35:

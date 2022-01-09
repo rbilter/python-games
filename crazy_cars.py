@@ -1,5 +1,3 @@
-'''crazy cars is a game where the player must avoid the enemy car'''
-
 # imports
 import sys
 import time
