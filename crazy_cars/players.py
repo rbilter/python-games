@@ -2,7 +2,6 @@ import pygame
 from pygame.locals import *
 import random
 
-
 class Player(pygame.sprite.Sprite):
     def __init__(self, assets):
         super().__init__()

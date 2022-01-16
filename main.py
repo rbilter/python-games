@@ -1,8 +1,8 @@
-from crazy_cars import crazy_cars
+from crazy_cars.crazy_cars import CrazyCars
 from game_interface import GameInterface
 
 def get_game() -> GameInterface:
-    return crazy_cars.CrazyCars()
+    return CrazyCars()
 
 
 def main():
@@ -10,16 +10,16 @@ def main():
     game.new_game()
 
     while True:
-        quit_game = game.game_closed()
-        if not quit_game:
+        quit_game_event = game.game_event()
+        if not quit_game_event:
             game_over = game.play_round()
             if game_over:
                 if game.try_again():
                     game.new_game()
                 else:
-                    quit_game = True
+                    quit_game_event = True
 
-        if quit_game:
+        if quit_game_event:
             game.end_game()
 
 

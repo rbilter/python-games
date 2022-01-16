@@ -1,8 +1,8 @@
 # imports
-from crazy_cars import players
-from crazy_cars import settings
-from crazy_cars import sound
-from crazy_cars import surface
+from crazy_cars.players import Enemy, Player
+from crazy_cars.settings import GameSettings
+from crazy_cars.sound import Sound, Sounds
+from crazy_cars.surface import GameSurface
 from game_interface import GameInterface
 import pygame
 from pygame.constants import *
@@ -12,7 +12,7 @@ import time
 
 class CrazyCars(GameInterface):
     def __init__(self):
-        pygame.init()
+        super().__init__()
 
         # assets sub folder
         self.__assets = "crazy_cars/assets"
@@ -22,17 +22,17 @@ class CrazyCars(GameInterface):
         self.__SURFACE_HEIGHT = 600
 
         # game surface
-        self.__game_surface = surface.GameSurface(self.__assets,
+        self.__game_surface = GameSurface(self.__assets,
             self.__SURFACE_WIDTH, 
             self.__SURFACE_HEIGHT)
         self.__game_surface.new_game_surface()
 
         # game settings
-        self.__game_settings = settings.GameSettings(self.__assets)
+        self.__game_settings = GameSettings(self.__assets)
         self.__game_speed = 5
 
         # game sound
-        self.__game_sound = sound.Sound(self.__assets)
+        self.__game_sound = Sound(self.__assets)
 
         # user event
         self.__INC_SPEED = pygame.USEREVENT + 1
@@ -42,21 +42,25 @@ class CrazyCars(GameInterface):
         pygame.quit()
         sys.exit()
 
-    def game_closed(self) -> bool:
+    def game_event(self) -> bool:
         close = False
         for event in pygame.event.get():
+            if event.type == KEYUP:
+                self.__game_sound.stop(Sounds.TIRE_SCREECH)
+            if event.type == KEYDOWN:
+                pressed_keys = pygame.key.get_pressed()
+                if pressed_keys[K_LEFT] or pressed_keys[K_RIGHT]:
+                    self.__game_sound.play(Sounds.TIRE_SCREECH)
             if event.type == self.__INC_SPEED:
                 self.__E1.increment_speed()
-                break
             if event.type == QUIT:
                 close = True
-                break
         return close
 
     def new_game(self):
-        self.__P1 = players.Player(self.__assets)
+        self.__P1 = Player(self.__assets)
         self.__P1.reset_center(self.__SURFACE_WIDTH)
-        self.__E1 = players.Enemy(self.__assets, self.__game_speed)
+        self.__E1 = Enemy(self.__assets, self.__game_speed)
         self.__E1.reset_center(self.__SURFACE_WIDTH)
 
         self.__enemies = pygame.sprite.Group()
@@ -67,7 +71,7 @@ class CrazyCars(GameInterface):
         self.__game_surface.render_get_ready(self.__P1)
         
         self.__sleep(2)
-        self.__game_sound.play_backgroud_music()
+        self.__game_sound.play(Sounds.BACKGROUND)
 
     def play_round(self) -> bool:
         game_over = False
@@ -106,9 +110,10 @@ class CrazyCars(GameInterface):
         return pygame.sprite.spritecollideany(self.__P1, self.__enemies)
 
     def __play_collision(self):
-        self.__game_sound.stop()
+        self.__game_sound.stop(Sounds.BACKGROUND)
+        self.__game_sound.stop(Sounds.TIRE_SCREECH)
+        self.__game_sound.play(Sounds.CRASH)
         self.__game_surface.render_collision(self.__P1)
-        self.__game_sound.play_crash()
         self.__sleep(1.5)
 
     def __play_game_over(self, score):
