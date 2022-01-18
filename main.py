@@ -1,3 +1,4 @@
+import sys
 from crazy_cars.crazy_cars import CrazyCars
 from game_interface import GameInterface
 
@@ -21,6 +22,8 @@ def main():
 
         if quit_game_event:
             game.end_game()
+            break
+    sys.exit()
 
 
 if __name__ == "__main__":

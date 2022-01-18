@@ -38,10 +38,6 @@ class CrazyCars(GameInterface):
         self.__INC_SPEED = pygame.USEREVENT + 1
         pygame.time.set_timer(self.__INC_SPEED, 1000)
 
-    def end_game(self):
-        pygame.quit()
-        sys.exit()
-
     def game_event(self) -> bool:
         close = False
         for event in pygame.event.get():

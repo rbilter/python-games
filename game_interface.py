@@ -9,8 +9,7 @@ class GameInterface:
         pass
 
     def game_event(self):
-        """check the game even, return true if the QUIT event was executed"""
-        pass
+        pygame.quit()
 
     def new_game(self):
         """initalize the game"""
